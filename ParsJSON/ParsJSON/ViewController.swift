@@ -443,23 +443,24 @@ class ViewController: UIViewController {
     self.present(dialogMessage, animated: true, completion: nil)
 }
 
+    @objc func appBecomeActive () {
+                if Reachability.isConnectedToNetwork(){
+                            print("Internet Connection Available!")
+                            parseData()
+                        print("Updated")
+                        } else {
+                            print("Internet Connection not Available!")
+                            alertInternetConnection()
+                        }
+                  
+                  }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        NotificationCenter.default.addObserver(self, selector: #selector(self.appBecomeActive), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-    @objc func appBecomeActive () {
-               if Reachability.isConnectedToNetwork(){
-                           print("Internet Connection Available!")
-                           parseData()
-                       print("Updated")
-                       } else {
-                           print("Internet Connection not Available!")
-                           alertInternetConnection()
-                       }
-                 
-                 }
+ 
     
    
     
