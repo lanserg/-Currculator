@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>963557170413-rpllsak2dkau3ugm5c7ecqqdrae523if.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.963557170413-rpllsak2dkau3ugm5c7ecqqdrae523if</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAXJ-he83YQdTGcHwbpr1bjWxdxyViRAyA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>963557170413</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>First.ObmenkaCash</string>
+	<key>PROJECT_ID</key>
+	<string>obmenkacash-7176a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>obmenkacash-7176a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:963557170413:ios:3827e6f73d5468293780e4</string>
+	<key>DATABASE_URL</key>
+	<string>https://obmenkacash-7176a.firebaseio.com</string>
+</dict>
+</plist>
