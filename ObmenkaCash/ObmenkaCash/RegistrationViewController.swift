@@ -31,7 +31,7 @@ class RegistrationViewController: UIViewController {
                           if let result = result {
                                 print(result.user.uid)
                            let refernce = Database.database().reference().child("users")
-                            refernce.child(result.user.uid).updateChildValues(["userID" : result.user.uid, "name" : name, "email" : email, "phone" : phone])
+                            refernce.child(result.user.uid).updateChildValues(["name" : name, "email" : email, "phone" : phone])
                             self.dismiss(animated: true, completion: nil)
                             }
                         } else {
@@ -54,18 +54,42 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
+            notifiFromKeyboard()
+        }
+
+            
+            
+             deinit {
+                 removeNotifiFromKeyboard()
+             }
+             
+
+             func notifiFromKeyboard () {
+                 
+                 NotificationCenter.default.addObserver(self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+                 
+                 NotificationCenter.default.addObserver(self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+             }
+             
+             func removeNotifiFromKeyboard ()  {
+                    
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                    
+                    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+
+                }
+             
+             @objc func kbWillShow (_ notification: Notification) {
+                 let userInfo = notification.userInfo
+                 let keyBoardSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+//                 scrollView.contentOffset = CGPoint(x: 0, y: keyBoardSize.height)
+                 }
+                 
+             @objc func kbWillHide () {
+//                 scrollView.contentOffset = CGPoint.zero
+                     }
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
-}

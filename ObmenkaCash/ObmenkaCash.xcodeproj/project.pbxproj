@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043E3712243A445800491F79 /* AllUserOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E3711243A445800491F79 /* AllUserOrdersViewController.swift */; };
 		044D0E232410F4F900A075FC /* AddOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044D0E222410F4F900A075FC /* AddOrderViewController.swift */; };
 		044D0E452415658C00A075FC /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044D0E442415658C00A075FC /* OrderDetailsViewController.swift */; };
+		045527FF2427991B002463CC /* ForgetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045527FE2427991B002463CC /* ForgetPasswordViewController.swift */; };
 		04601BFC240A8BAD00AAF494 /* LoginRegistationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04601BFB240A8BAD00AAF494 /* LoginRegistationViewController.swift */; };
 		04601BFE240AAB2800AAF494 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04601BFD240AAB2800AAF494 /* RegistrationViewController.swift */; };
 		046D2CC32415741C009D0C9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 046D2CC22415741C009D0C9A /* GoogleService-Info.plist */; };
 		046F891324260F3E00DBE0B2 /* Pods_ObmenkaCash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C3170980067623B028D664 /* Pods_ObmenkaCash.framework */; };
 		04E1B9AE23FBD797004EFD38 /* OrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E1B9AD23FBD797004EFD38 /* OrdersViewController.swift */; };
+		04F65F8F243DCF9800C13B87 /* MyOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F65F8E243DCF9800C13B87 /* MyOrdersViewController.swift */; };
 		B108E17D2389BF14008305F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B108E17C2389BF14008305F7 /* AppDelegate.swift */; };
 		B108E17F2389BF14008305F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B108E17E2389BF14008305F7 /* ViewController.swift */; };
 		B108E1822389BF14008305F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B108E1802389BF14008305F7 /* Main.storyboard */; };
@@ -23,12 +26,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		043E3711243A445800491F79 /* AllUserOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllUserOrdersViewController.swift; sourceTree = "<group>"; };
 		044D0E222410F4F900A075FC /* AddOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrderViewController.swift; sourceTree = "<group>"; };
 		044D0E442415658C00A075FC /* OrderDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsViewController.swift; sourceTree = "<group>"; };
+		045527FE2427991B002463CC /* ForgetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewController.swift; sourceTree = "<group>"; };
 		04601BFB240A8BAD00AAF494 /* LoginRegistationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRegistationViewController.swift; sourceTree = "<group>"; };
 		04601BFD240AAB2800AAF494 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		046D2CC22415741C009D0C9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04E1B9AD23FBD797004EFD38 /* OrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersViewController.swift; sourceTree = "<group>"; };
+		04F65F8E243DCF9800C13B87 /* MyOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersViewController.swift; sourceTree = "<group>"; };
 		16C3170980067623B028D664 /* Pods_ObmenkaCash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ObmenkaCash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2939A07DD7511E6C64BDD6AE /* Pods-ObmenkaCash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObmenkaCash.debug.xcconfig"; path = "Target Support Files/Pods-ObmenkaCash/Pods-ObmenkaCash.debug.xcconfig"; sourceTree = "<group>"; };
 		72538BBD4E57BF909EDAE114 /* Pods-ObmenkaCash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObmenkaCash.release.xcconfig"; path = "Target Support Files/Pods-ObmenkaCash/Pods-ObmenkaCash.release.xcconfig"; sourceTree = "<group>"; };
@@ -92,6 +98,9 @@
 				04601BFD240AAB2800AAF494 /* RegistrationViewController.swift */,
 				044D0E222410F4F900A075FC /* AddOrderViewController.swift */,
 				044D0E442415658C00A075FC /* OrderDetailsViewController.swift */,
+				043E3711243A445800491F79 /* AllUserOrdersViewController.swift */,
+				045527FE2427991B002463CC /* ForgetPasswordViewController.swift */,
+				04F65F8E243DCF9800C13B87 /* MyOrdersViewController.swift */,
 				B108E1802389BF14008305F7 /* Main.storyboard */,
 				B108E1882389BF1C008305F7 /* Info.plist */,
 				046D2CC22415741C009D0C9A /* GoogleService-Info.plist */,
@@ -226,12 +235,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				044D0E452415658C00A075FC /* OrderDetailsViewController.swift in Sources */,
+				04F65F8F243DCF9800C13B87 /* MyOrdersViewController.swift in Sources */,
 				04601BFE240AAB2800AAF494 /* RegistrationViewController.swift in Sources */,
 				B12964B7239039E500EAD6DB /* SecondViewController.swift in Sources */,
 				044D0E232410F4F900A075FC /* AddOrderViewController.swift in Sources */,
+				045527FF2427991B002463CC /* ForgetPasswordViewController.swift in Sources */,
 				04601BFC240A8BAD00AAF494 /* LoginRegistationViewController.swift in Sources */,
 				B108E17F2389BF14008305F7 /* ViewController.swift in Sources */,
 				B108E17D2389BF14008305F7 /* AppDelegate.swift in Sources */,
+				043E3712243A445800491F79 /* AllUserOrdersViewController.swift in Sources */,
 				04E1B9AE23FBD797004EFD38 /* OrdersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -364,7 +376,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -382,7 +394,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X24JXQT969;
 				INFOPLIST_FILE = ObmenkaCash/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -402,7 +414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X24JXQT969;
 				INFOPLIST_FILE = ObmenkaCash/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

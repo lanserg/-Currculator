@@ -10,6 +10,8 @@ import UIKit
 import Foundation
 import SystemConfiguration
 import Firebase
+import FirebaseFirestoreSwift
+
 
 
 struct branches: Decodable {
@@ -32,7 +34,7 @@ struct branches: Decodable {
 
 class ViewController: UIViewController {
  
-   // let userDefaultData = UserDefaults.standard
+    let userDefaultData = UserDefaults.standard
     
     public class Reachability {
 
@@ -69,6 +71,10 @@ class ViewController: UIViewController {
 
         }
     }
+ 
+    lazy var db = Firestore.firestore()
+
+    
     
 // bottom buttons outlets and scrollview
     
@@ -137,7 +143,7 @@ class ViewController: UIViewController {
     var arrayRUBbid : [Any] = []
 
     var tempArr : [Any] = []
-    var arrayForSegue :[String] = []
+    var arrayForSegue : [String] = []
     var refreshControl = UIRefreshControl()
     
 //    @IBSegueAction func toSecongSeg(_ coder: NSCoder) -> SecondViewController? {
@@ -407,6 +413,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var LBL : UILabel!
     
+    @IBAction func goToOrders(_ sender: UIButton) {
+        let storyboard = UIStoryboard (name: "Main", bundle: nil)
+        let newVC = storyboard.instantiateViewController(withIdentifier: "OrdersViewController") as! OrdersViewController
+        let backItem = UIBarButtonItem()
+        backItem.title = NSLocalizedString("Назад", comment: "")
+        navigationItem.backBarButtonItem = backItem
+        self.navigationController?.pushViewController(newVC, animated: true)        
+    }
     
     func alertInternetConnection() {
         
@@ -416,7 +430,7 @@ class ViewController: UIViewController {
         print("Ok button tapped")
         
             // DispatchQueue.main.async {
-         if let arr = UserDefaults.standard.array(forKey: "arr") as? [String]{
+         if let arr = UserDefaults.standard.array(forKey: "arr") as? [String] {
              
             self.EURaveAsk.text = arr[0]
             self.EURaveBid.text = arr[1]
@@ -437,8 +451,6 @@ class ViewController: UIViewController {
             self.LBL.sizeToFit()
             self.LBL.text = "Данные не доступны. Проверьте интернет соединение."
          }
-  //    }
-        
     })
         
     
@@ -469,6 +481,8 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.willEnterForegroundNotification, object: nil)
+        checkUser()
+     
     }
  
     
@@ -478,59 +492,108 @@ class ViewController: UIViewController {
    
     
     @IBAction func exit(_ sender: Any) {
-//        Auth.auth().addStateDidChangeListener { (auth, user)  in
-//        if user == nil {
-//
-//        } else {
-//                do {
-//                      try Auth.auth().signOut()
-//                  } catch {
-//                      print(error)
-//                  }
-//            }
-//        }
-    }
+                do {
+                      try Auth.auth().signOut()
+                  } catch {
+                      print(error)
+                  }
+            }
+    
     
     @IBAction func enter(_ sender: UIButton) {
-        Auth.auth().addStateDidChangeListener { (auth, user)  in
-        if user == nil {
+        if (userCheck == false) {
             self.modalShow()
-        } else if (user != nil) {
-//            self.checkUser()
+        } else {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print(error)
+            }
+        }
+        }
+    
+    var userCheck : Bool?
+    func checkUser () {
+        Auth.auth().addStateDidChangeListener { (auth, user)  in
+                    if user == nil {
+                        self.enterButton.setTitle("Войти", for: .normal)
+                        self.userCheck = false
+                        print(self.userCheck! as Bool)
+                    } else {
+                      self.enterButton.setTitle("Выйти", for: .normal)
+                        self.userCheck = true
+                        print(self.userCheck! as Bool)
             }
         }
     }
     
-    func checkUser () {
-               do {
-                    try Auth.auth().signOut()
-                        self.enterButton.setTitle("Войти", for: .normal)
-                    } catch {
-                        print(error)
-                    }
-            }
+    //   переход на контроллер входа в систему
     
     func modalShow() {
         let newVC = storyboard?.instantiateViewController(withIdentifier: "LoginRegistationViewController") as! LoginRegistationViewController
         self.navigationController?.pushViewController(newVC, animated: true)
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Назад"
+        navigationItem.backBarButtonItem = backItem
     }
+    
+    
+
+    var result1 : String = ""
+    var result2 : String = ""
+    var result3 : String = ""
+    var result4 : String = ""
+    var result5 : String = ""
+    var result6 : String = ""
+    var result7 : String = ""
+    var result8 : String = ""
+    var result9 : String = ""
+    var result10 : String = ""
+    var result11 : String = ""
+
+    var arrayOfData : [[String]] = []
+    
+    func getOrdersData () {
+            db.collection("orders").getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                         
+                            self.result1 = document.data()["operation"] as! String
+                            self.result2 = document.data()["city"] as! String
+                            self.result3 = document.data()["currency"] as! String
+                            self.result4 = document.data()["rate"] as! String
+                            self.result5 = document.data()["amount"] as! String
+                            self.result6 = document.data()["comment"] as! String
+                            self.result7 = document.data()["username"] as! String 
+                            self.result8 = document.data()["phone"] as! String
+                            self.result9 = document.data()["uid"] as! String
+                            self.result10 = document.data()["date"] as! String
+                            self.result11 = document.documentID
+
+                        
+                            self.arrayOfData.append([self.result1, self.result2, self.result3, self.result4, self.result5, self.result6, self.result7, self.result8, self.result9, self.result10, self.result11])
+                        }
+                            print(self.arrayOfData)
+                            UserDefaults.standard.set(self.arrayOfData, forKey: "orders")
+
+                    }
+                
+        }
+    }
+    
+    
     
 override func viewDidLoad() {
     super.viewDidLoad()
-  /*
-    NotificationCenter.default.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.willEnterForegroundNotification, object: nil )
-   */
+    
+    getOrdersData()
     
 //    check user if logged in
-    Auth.auth().addStateDidChangeListener { (auth, user)  in
-                if user == nil {
-                    self.enterButton.setTitle("Войти", for: .normal)
-                } else {
-                  self.enterButton.setTitle("Выйти", for: .normal)
-        }
-            }
-    
-    
+
+    checkUser()
     
     scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
     scrollView.translatesAutoresizingMaskIntoConstraints = true
@@ -547,7 +610,6 @@ override func viewDidLoad() {
     if Reachability.isConnectedToNetwork(){
               print("Internet Connection Available!")
               parseData()
-        //userDefaultData.set(arrayForSegue, forKey: "LASTDATA")
           } else {
               print("Internet Connection not Available!")
               alertInternetConnection()
@@ -555,7 +617,7 @@ override func viewDidLoad() {
     
     }
     
- 
+//    отправляем данные о текущих курсах валют в калькулятор
     override func prepare(for segue: UIStoryboardSegue,  sender: Any?) {
         if (segue.identifier == "toSecondVC") {
               if (arrayForSegue.count > 0) {
@@ -563,6 +625,8 @@ override func viewDidLoad() {
            destVCdata.arrayOfData = arrayForSegue
         }
     }
+
+//        определение названия для кнопки "Back"
         let backItem = UIBarButtonItem()
         backItem.title = "Назад"
         navigationItem.backBarButtonItem = backItem

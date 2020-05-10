@@ -174,6 +174,7 @@ class SecondViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var resultNum = ""          // результат выражения
     var arrayOfData : [String] = [] // данные с первого VC для подсчета кросс курсов
     
+    
     // кнопки калькулятора
     
     @IBAction func ACButton(_ sender: Any) {
@@ -557,15 +558,14 @@ class SecondViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         return (Double(result))
     }
 
-    
+    var defaultArray = UserDefaults.standard.array(forKey: "arr")
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        exchangeB.layer.cornerRadius = 10
-//        exchangeB.layer.borderWidth = 1
-        //exchangeB.layer.borderColor = UIColor.green.cgColor
-        
-        
+        if (arrayOfData.isEmpty == true && defaultArray?.isEmpty == false) {
+            for i in defaultArray! as [Any]  {
+                arrayOfData.append(i as! String)
+            }
+        }
         if (arrayOfData.isEmpty == true) {
             exchangeB.isEnabled = false
         } else {
@@ -588,6 +588,8 @@ class SecondViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                     pickerValue2 = arrayOfCurrencyes2[saving.integer(forKey: "currencyTwo")]
                 }
        print(arrayOfData)
+        
+//        print(UserDefaults.standard.array(forKey: "arr") as String)
     }
     
 }

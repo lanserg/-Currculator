@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -26,11 +27,8 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
         
         if searching {
-//                       let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
                            cell.textLabel?.text = searchItem[indexPath.row]
-//                       return cell
                    } else {
-//                       let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
                            cell.textLabel?.text = arrayOfCities[indexPath.row]
         }
         return cell
@@ -96,7 +94,7 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         print(selectOperaion())
     }
     
-    let arrayOfCities = ["Винница", "Днепр", "Донецк", "Житомир", "Запорожье", "Ивано-Франковск", "Киев", "Кропивницкий", "Луганск", "Луцк", "Львов", "Николаев", "Одесса", "Полтава", "Ровно", "Сумы", "Тернополь", "Ужгород", "Харьков"," Херсон", "Хмельницкий", "Черкассы", "Чернигов", "Черновцы"]
+    let arrayOfCities = ["Винница", "Днепр", "Донецк", "Житомир", "Запорожье", "Ивано-Франковск", "Киев", "Кропивницкий", "Луганск", "Луцк", "Львов", "Николаев", "Одесса", "Полтава", "Ровно", "Симферополь", "Сумы", "Тернополь", "Ужгород", "Харьков"," Херсон", "Хмельницкий", "Черкассы", "Чернигов", "Черновцы"]
     
     var currency = ""
     var city = ""
@@ -130,11 +128,37 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         print(currency)
     }
     
+    let db = Firestore.firestore()
+    var ref = Database.database().reference()
+    var tempID : String = ""
+    
     @IBAction func sendOrder(_ sender: UIButton) {
         
         if (amountText.text?.isEmpty == false && rateText.text?.isEmpty == false && currency.isEmpty == false && city.isEmpty == false) {
         amount = amountText.text!
         rate = rateText.text!
+            
+            var username : String = ""
+            var phone : String = ""
+            
+             let userID = Auth.auth().currentUser?.uid
+
+//            let userID = Auth.auth().currentUser?.uid
+            ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+              // Get user value
+              let value = snapshot.value as? NSDictionary
+                username = value?["name"] as? String ?? ""
+                phone = value?["phone"] as? String ?? ""
+                self.temporaryOrderArray.append(username)
+                self.temporaryOrderArray.append(phone)
+                print("userName is: \(username)")
+              }) { (error) in
+                print(error.localizedDescription)
+            }
+            
+            let dateformat = DateFormatter()
+            dateformat.dateFormat = "dd/MM/yyyy HH:mm"
+            let date = "\(dateformat.string(from: Date()))"
         
         temporaryOrderArray.append(selectOperaion())
         temporaryOrderArray.append(currency)
@@ -142,21 +166,71 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         temporaryOrderArray.append(amount)
         temporaryOrderArray.append(rate)
         temporaryOrderArray.append(comment)
+        temporaryOrderArray.append(date)
         
         let dialogMessage = UIAlertController(title: NSLocalizedString("Все верно?", comment: ""), message: NSLocalizedString("\(currency), \(selectOperaion()), \(city), \(amount), \(rate), \(comment) ", comment: ""), preferredStyle: .alert)
         
     // ALERT при нажатии кнопки "Отправить"
-                 
+            
     let send = UIAlertAction(title: NSLocalizedString("Отправить", comment: ""), style: .default, handler: { (action) -> Void in
+        let dbArray : [String : Any] = [
+            "operation" : self.selectOperaion(),
+            "currency" : self.currency,
+            "city" : self.city,
+            "amount" : self.amount,
+            "rate" : self.rate,
+            "comment" : self.comment,
+            "date" : date,
+            "uid" : userID!,
+            "username" : username,
+            "phone" : phone
+                ]
         print("Sending to DB")
+        print(self.temporaryOrderArray)
+//            добавляем новый документ с заявкой в бд и получаем его id
+        var ref: DocumentReference? = nil
+        ref = self.db.collection("orders").addDocument(data: dbArray) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+//        ref = self.db.collection("orders").document().setData(dbArray) {
+//
+//                      err in
+//                        if let err = err {
+//                            print("Error adding document: \(err)")
+//                        } else {
+//                            let idd = ref!.documentID
+//                            print("Document added with ID: \(idd)")
+//                        }
+//                    }
+        
+//        self.db.collection("orders").document(self.uid).getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+//                print("Document data:\n \(dataDescription)")
+//            } else {
+//                print("Document does not exist")
+//            }
+//        }
+
+        
+        
             self.orderDetailsArray.append(self.temporaryOrderArray)
             self.temporaryOrderArray.removeAll()
             self.amountText.text = ""
             self.rateText.text = ""
             self.textView.text = ""
+            self.searchBar.text = ""
         self.textView.resignFirstResponder()
         self.amountText.resignFirstResponder()
         self.rateText.resignFirstResponder()
+        self.USDButton.isEnabled = true
+        self.EURButton.isEnabled = true
+        self.RUBButton.isEnabled = true
+
             print(self.orderDetailsArray)
         })
              
@@ -190,28 +264,23 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         }
     }
     
-    
-    
-    // Убираем клавиатуру в UITextView
-    
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    comment = textView.text!
-      if(text == "\n") {
-          textView.resignFirstResponder()
-          return false
-      }
-        return textView.text.count + (text.count - range.length) <= 60
-  }
-    
-    
+    var uid : String = ""
+
     // добавление placeholder "Комментарий" в UITextView поле
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
-            textView.text = nil
+            if let selectedRange = textView.selectedTextRange {
+                let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
+                print("\(cursorPosition)")
+            let newPosition = textView.beginningOfDocument
+            textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
+            textView.text = "0"
             textView.textColor = UIColor.black
+            }
         }
-    }
+        }
+    
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
@@ -220,8 +289,40 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
         }
     }
     
+    
+    // Убираем клавиатуру в UITextView
+
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+
+    comment = textView.text!
+    
+      if(text == "\n") {
+          textView.resignFirstResponder()
+          return false
+      }
+   
+  
+    
+    if let selectedRange = textView.selectedTextRange {
+        
+
+                   let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
+
+                   print("\(cursorPosition)")
+    }
+    
+        return textView.text.count + (text.count - range.length) <= 100
+  }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Назад"
+        navigationItem.backBarButtonItem = backItem
         
         notifiFromKeyboard()
         
@@ -242,12 +343,16 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
          removeNotifiFromKeyboard()
      }
      
-
+    
      func notifiFromKeyboard () {
          
          NotificationCenter.default.addObserver(self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
          
          NotificationCenter.default.addObserver(self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        scrollView.isUserInteractionEnabled = true
+        scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(kbHide)))
+        
      }
      
      func removeNotifiFromKeyboard ()  {
@@ -268,16 +373,21 @@ class AddOrderViewController: UIViewController, UITextViewDelegate, UITableViewD
          scrollView.contentOffset = CGPoint.zero
              }
     
+        @objc func kbHide () {
+            scrollView.contentOffset = CGPoint.zero
+            view.endEditing(true)
+            }
+   
     
     
     func selectOperaion () -> String {
           let select = segmentBuySell.selectedSegmentIndex
-          var operation = "buy"
+          var operation = NSLocalizedString("Куплю", comment: "")
           switch select {
           case 0:
-              operation = "buy"
+              operation = NSLocalizedString("Куплю", comment: "")
           case 1:
-             operation = "sell"
+             operation = NSLocalizedString("Продам", comment: "")
           default:
               print("not selected")
           }
@@ -302,12 +412,14 @@ extension AddOrderViewController : UISearchBarDelegate {
 }
 
 extension AddOrderViewController : UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         amount = amountText.text!
         rate = rateText.text!
         
         amountText.resignFirstResponder()
         rateText.resignFirstResponder()
+        
         
         return true
     }
